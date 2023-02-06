@@ -107,7 +107,6 @@ class _SetSecurityPINState extends State<SetSecurityPIN> {
                       onTap: () => {},
                       child: CustomButton(
                         btnText: "CONFIRM PIN",
-                        btnWidth: MediaQuery.of(context).size.width,
                       ),
                     ),
                   ],

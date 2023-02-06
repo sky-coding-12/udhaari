@@ -41,7 +41,7 @@ class _UserLoginState extends State<UserLogin> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            "CredMate",
+            title,
             style: TextStyle(
               color: mainColor,
               fontWeight: FontWeight.bold,
@@ -131,7 +131,6 @@ class _UserLoginState extends State<UserLogin> {
                       ),
                       child: CustomButton(
                         btnText: "LOGIN",
-                        btnWidth: MediaQuery.of(context).size.width,
                       ),
                     ),
                     const SizedBox(

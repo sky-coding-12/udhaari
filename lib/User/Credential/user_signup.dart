@@ -48,7 +48,7 @@ class _UserSignUpState extends State<UserSignUp> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "CredMate",
+          title,
           style: TextStyle(
             color: mainColor,
             fontWeight: FontWeight.bold,
@@ -150,7 +150,6 @@ class _UserSignUpState extends State<UserSignUp> {
                       ),
                       child: CustomButton(
                         btnText: "SIGNUP",
-                        btnWidth: MediaQuery.of(context).size.width,
                       ),
                     ),
                     const SizedBox(height: 15.0),

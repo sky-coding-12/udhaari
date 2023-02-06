@@ -15,7 +15,7 @@ class WhoAreYou extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "CredMate",
+          title,
           style: TextStyle(
             color: mainColor,
             fontWeight: FontWeight.bold,
@@ -59,8 +59,8 @@ class WhoAreYou extends StatelessWidget {
                       ),
                     },
                     child: CustomButton(
-                        btnText: 'Customer',
-                        btnWidth: MediaQuery.of(context).size.width * 0.7),
+                      btnText: 'Customer',
+                    ),
                   ),
                 ),
                 const Text(
@@ -81,7 +81,6 @@ class WhoAreYou extends StatelessWidget {
                     },
                     child: CustomButton(
                       btnText: 'Vendor',
-                      btnWidth: MediaQuery.of(context).size.width * 0.7,
                     ),
                   ),
                 ),
@@ -102,8 +101,8 @@ class WhoAreYou extends StatelessWidget {
                       ),
                     },
                     child: CustomButton(
-                        btnText: 'Bank',
-                        btnWidth: MediaQuery.of(context).size.width * 0.7),
+                      btnText: 'Bank',
+                    ),
                   ),
                 ),
               ],

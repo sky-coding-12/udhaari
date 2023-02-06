@@ -86,7 +86,6 @@ class _SetOtpVerification extends State<OtpVerification> {
                       ),
                       child: CustomButton(
                         btnText: "CONFIRM OTP",
-                        btnWidth: MediaQuery.of(context).size.width,
                       ),
                     ),
                   ],

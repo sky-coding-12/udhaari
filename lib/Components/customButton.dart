@@ -4,18 +4,16 @@ import '../Constant/const_variable.dart';
 
 class CustomButton extends StatelessWidget {
   String btnText;
-  double btnWidth;
 
   CustomButton({
     Key? key,
     required this.btnText,
-    required this.btnWidth,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: btnWidth,
+      width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.065,
       child: Container(
         decoration: BoxDecoration(

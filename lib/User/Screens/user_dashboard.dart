@@ -54,6 +54,7 @@ class _UserDashboardState extends State<UserDashboard> {
                         ),
                       ),
                       IconButton(
+                        tooltip: "Notification",
                         onPressed: () => {},
                         icon: Icon(
                           Icons.notifications,
