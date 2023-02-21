@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../Constant/const_variable.dart';
+import 'package:take_it/Constant/const_variable.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hint;
@@ -10,6 +9,10 @@ class CustomTextField extends StatefulWidget {
   final Icon prefixIcon;
   final IconButton? suffixIcon;
   final int? maxLength;
+  final Function? onChanged;
+  final Function validator;
+  final Color? borderColor = Colors.red;
+  final Color? errorColor;
 
   CustomTextField({
     required this.hint,
@@ -19,15 +22,39 @@ class CustomTextField extends StatefulWidget {
     this.inputType = TextInputType.text,
     this.obscureText = false,
     this.maxLength,
+    this.onChanged,
+    required this.validator,
+    this.errorColor,
   });
 
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
+  late Color currentColor;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentColor = widget.borderColor!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: (text) {
+        if (widget.onChanged != null) {
+          widget.onChanged!(text);
+        }
+        setState(() {
+          if (!widget.validator(text) || text.isEmpty) {
+            currentColor = Colors.red;
+          } else {
+            currentColor = mainColor;
+          }
+        });
+      },
       obscureText: widget.obscureText,
       keyboardType: widget.inputType,
       controller: widget.controller,
@@ -47,7 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
-            color: mainColor,
+            color: currentColor,
             width: 1.5,
           ),
         ),
