@@ -190,8 +190,7 @@ class _UserLoginState extends State<UserLogin> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const UserForgotPassword()),
+                                builder: (context) => UserForgotPassword()),
                           ),
                         },
                         child: const Text("forgot password?"),
