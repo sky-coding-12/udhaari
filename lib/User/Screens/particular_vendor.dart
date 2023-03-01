@@ -12,17 +12,19 @@ class ParticularVendor extends StatefulWidget {
 
 class _ParticularVendorState extends State<ParticularVendor> {
   late int idx;
+  late String name;
   @override
   void initState() {
     super.initState();
     idx = widget.index;
+    name = widget.name;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("$idx"),
+        child: Text(name),
       ),
     );
   }

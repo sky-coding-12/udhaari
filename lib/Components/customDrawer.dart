@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/auth_provider.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -17,9 +21,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              children: const [
+              children: [
                 CircleAvatar(
-                  backgroundColor: Colors.black38,
+                  backgroundImage: NetworkImage(ap.userModel.profilePic),
                   radius: 45.0,
                 ),
                 SizedBox(width: 15.0),

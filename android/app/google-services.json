@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "274316799646",
+    "project_id": "take-it-62361",
+    "storage_bucket": "take-it-62361.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274316799646:android:160d365df2787b4453558f",
+        "android_client_info": {
+          "package_name": "com.example.take_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274316799646-pvapkttr8n9q8iqonana37sja6026a7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.take_it",
+            "certificate_hash": "9f353bba18948b9eb533aa02f9b2944fee5c4b96"
+          }
+        },
+        {
+          "client_id": "274316799646-65t8kiibe385ub9t3od0falrh2faud6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyComtKm1sNnVONgi5a0jVTHHLfpR5kBAkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274316799646-65t8kiibe385ub9t3od0falrh2faud6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
