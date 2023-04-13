@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:take_it/services/helper.dart';
 
 class VisibilityModel with ChangeNotifier {
-  bool isVisible = false;
+  bool isPassVisible = false;
+  bool isPinVisible = false;
   bool isEmailValid = false;
   bool isPassValid = false;
   bool isUsernameValid = false;
@@ -11,9 +12,17 @@ class VisibilityModel with ChangeNotifier {
   bool isOTPValid = false;
   bool isPINValid = false;
   bool isConfirmPINValid = false;
+  bool isShopNameValid = false;
+  bool isAddressValid = false;
+  bool isMoneyValid = false;
 
-  void changeVisibility() {
-    isVisible = !isVisible;
+  void changePassVisibility() {
+    isPassVisible = !isPassVisible;
+    notifyListeners();
+  }
+
+  void changePinVisibility() {
+    isPinVisible = !isPinVisible;
     notifyListeners();
   }
 
@@ -40,6 +49,24 @@ class VisibilityModel with ChangeNotifier {
       isUsernameValid = true;
     } else {
       isUsernameValid = false;
+    }
+    notifyListeners();
+  }
+
+  void changeAddressValidation(val) {
+    if (validateName(val)) {
+      isAddressValid = true;
+    } else {
+      isAddressValid = false;
+    }
+    notifyListeners();
+  }
+
+  void changeShopNameValidation(val) {
+    if (validateShopName(val)) {
+      isShopNameValid = true;
+    } else {
+      isShopNameValid = false;
     }
     notifyListeners();
   }
@@ -85,6 +112,15 @@ class VisibilityModel with ChangeNotifier {
       isConfirmPINValid = true;
     } else {
       isConfirmPINValid = false;
+    }
+    notifyListeners();
+  }
+
+  void changeMoneyValidation(val) {
+    if (validateMoney(val)) {
+      isMoneyValid = true;
+    } else {
+      isMoneyValid = false;
     }
     notifyListeners();
   }

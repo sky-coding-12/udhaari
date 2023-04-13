@@ -5,6 +5,7 @@ class UserModel {
   String profilePic;
   String createdAt;
   String phoneNumber;
+  String securityPIN;
   String uid;
 
   UserModel({
@@ -14,6 +15,7 @@ class UserModel {
     required this.profilePic,
     required this.createdAt,
     required this.phoneNumber,
+    required this.securityPIN,
     required this.uid,
   });
 
@@ -25,6 +27,7 @@ class UserModel {
       password: map['password'] ?? '',
       uid: map['uid'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
+      securityPIN: map['securityPIN'] ?? '',
       createdAt: map['createdAt'] ?? '',
       profilePic: map['profilePic'] ?? '',
     );
@@ -39,6 +42,7 @@ class UserModel {
       "password": password,
       "profilePic": profilePic,
       "phoneNumber": phoneNumber,
+      "securityPIN": securityPIN,
       "createdAt": createdAt,
     };
   }

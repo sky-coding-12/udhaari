@@ -28,6 +28,17 @@ bool validateName(String value) {
   return true;
 }
 
+bool validateShopName(String value) {
+  String pattern = r'(^[a-zA-Z ]*$)';
+  RegExp regExp = RegExp(pattern);
+  if (value.isEmpty) {
+    return false;
+  } else if (!regExp.hasMatch(value)) {
+    return false;
+  }
+  return true;
+}
+
 bool validateMobile(String value) {
   String pattern =
       r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)';
@@ -46,6 +57,19 @@ bool validateOTP(String value) {
   if (value.isEmpty) {
     return false;
   } else if (!regExp.hasMatch(value)) {
+    return false;
+  }
+  return true;
+}
+
+bool validateMoney(String value) {
+  String pattern = r'(^\d{1,}$)';
+  RegExp regExp = RegExp(pattern);
+  if (value.isEmpty) {
+    return false;
+  } else if (!regExp.hasMatch(value)) {
+    return false;
+  } else if (value.contains("-")) {
     return false;
   }
   return true;
