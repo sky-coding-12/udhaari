@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:take_it/All_Users/Bank/Screens/bank_dashboard.dart';
 import 'package:take_it/All_Users/User/Screens/user_dashboard.dart';
-import 'package:take_it/All_Users/Vendor/Screens/vendor_dashboard.dart';
 import 'package:take_it/provider/bank_auth_provider.dart';
 import 'package:take_it/provider/vendor_auth_provider.dart';
 
 import 'All_Users/Bank/Credential/bank_login.dart';
 import 'All_Users/User/Credential/user_login.dart';
 import 'All_Users/Vendor/Credential/vendor_login.dart';
+import 'All_Users/Vendor/Screens/bottom_appbar.dart';
 import 'Components/customButton.dart';
 import 'Constant/const_variable.dart';
 import 'provider/user_auth_provider.dart';
@@ -45,7 +45,7 @@ class _WhoAreYouState extends State<WhoAreYou> {
           style: TextStyle(
             color: mainColor,
             fontWeight: FontWeight.bold,
-            fontSize: 25.5,
+            fontSize: 20.0,
           ),
         ),
         elevation: 0.0,
@@ -117,7 +117,7 @@ class _WhoAreYouState extends State<WhoAreYou> {
                               () => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const VendorDashBoard(),
+                                  builder: (context) => const BottomAppbar(),
                                 ),
                               ),
                             );

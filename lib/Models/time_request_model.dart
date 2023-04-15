@@ -6,6 +6,7 @@ class TimeRequestModel {
   String? status;
   String? message;
   String? newDate;
+  String? dueDate;
 
   TimeRequestModel(
       {this.timeRequestId,
@@ -14,6 +15,7 @@ class TimeRequestModel {
       this.transactionId,
       this.status,
       this.message,
+      this.dueDate,
       this.newDate});
 
   TimeRequestModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class TimeRequestModel {
     status = json['status'];
     message = json['message'];
     newDate = json['newDate'];
+    dueDate = json['dueDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class TimeRequestModel {
     data['status'] = this.status;
     data['message'] = this.message;
     data['newDate'] = this.newDate;
+    data['dueDate'] = this.dueDate;
     return data;
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -79,251 +80,271 @@ class _TakeMoneyState extends State<TakeMoney> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const UserDashboard()));
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: mainColor,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backColor,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserDashboard()));
+            },
+            icon: Icon(
+              CupertinoIcons.back,
+              color: mainColor,
+            ),
           ),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Take Borrow Money",
-          style: TextStyle(
-            color: mainColor,
-            fontSize: 24.0,
+          centerTitle: true,
+          title: Text(
+            "Take Borrow Money",
+            style: TextStyle(
+              color: mainColor,
+              fontSize: 20.0,
+            ),
           ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
         ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: ChangeNotifierProvider<VisibilityModel>(
-        create: (context) => VisibilityModel(),
-        child: SingleChildScrollView(
-          child: Align(
-              alignment: Alignment.center,
-              child: FutureBuilder(
-                future: vendor,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    AssetImage("assets/images/take_money.png"),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10.0),
-                          Text(
-                            "Shop Name : ${snapshot.data!.shopName!.toUpperCase()}",
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                            ),
-                          ),
-                          const SizedBox(height: 3.0),
-                          Text(
-                            "Vendor Name : ${snapshot.data!.vendorName}",
-                            style: const TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          const SizedBox(height: 10.0),
-                          const Divider(
-                            height: 2.0,
-                            color: Colors.black38,
-                          ),
-                          const SizedBox(height: 10.0),
-                          Consumer<VisibilityModel>(
-                            builder: (context, myModel, child) {
-                              return TextField(
-                                keyboardType: TextInputType.number,
-                                onChanged: (val) => {
-                                  myModel.changeMoneyValidation(val),
-                                  if (myModel.isMoneyValid)
-                                    {
-                                      validMoney = true,
-                                    }
-                                  else
-                                    {
-                                      validMoney = false,
-                                    }
-                                },
-                                controller: _moneyController,
-                                decoration: InputDecoration(
-                                  counterText: "",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 22.0,
-                                    vertical: 12.0,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: myModel.isMoneyValid
-                                          ? mainColor
-                                          : Colors.red,
-                                      width: 1.5,
-                                    ),
-                                  ),
-                                  hintText: "Amount",
-                                  prefixIcon: Icon(
-                                    Icons.money,
-                                    color: mainColor,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 10.0),
-                          TextField(
-                            controller: _dateController,
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              counterText: "",
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 22.0,
-                                vertical: 12.0,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.calendar_today),
-                                onPressed: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2101));
-
-                                  if (pickedDate != null) {
-                                    String formattedDate =
-                                        DateFormat.yMd().format(pickedDate);
-
-                                    setState(() {
-                                      _dateController.text = formattedDate;
-                                      validDate = true;
-                                    });
-                                  } else {
-                                    AwesomeDialog(
-                                      context: context,
-                                      headerAnimationLoop: true,
-                                      animType: AnimType.scale,
-                                      btnCancelColor: mainColor,
-                                      dialogType: DialogType.warning,
-                                      btnCancelOnPress: () {},
-                                      title: 'Invalid Date',
-                                      desc: 'Please, select date',
-                                    ).show();
-                                  }
-                                },
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: Colors.black,
+        body: ChangeNotifierProvider<VisibilityModel>(
+          create: (context) => VisibilityModel(),
+          child: SingleChildScrollView(
+            child: Align(
+                alignment: Alignment.center,
+                child: FutureBuilder(
+                  future: vendor,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      "assets/images/take_money.png"),
                                 ),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: mainColor,
-                                  width: 1.5,
-                                ),
-                              ),
-                              hintText: "Select Payment Date",
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: mainColor,
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                              "Shop Name : ${snapshot.data!.shopName!.toUpperCase()}",
+                              style: const TextStyle(
+                                fontSize: 18.0,
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: MediaQuery.of(context).size.height * 0.065,
-                            child: ElevatedButton(
-                              style: const ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      Color.fromRGBO(63, 72, 204, 1))),
-                              child: const Text(
-                                "TAKE BORROW",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                            const SizedBox(height: 3.0),
+                            Text(
+                              "Vendor Name : ${snapshot.data!.vendorName}",
+                              style: const TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black54,
                               ),
-                              onPressed: () async {
-                                if (validDate && validMoney) {
-                                  if (await takeBorrow(
-                                    _dateController.text.trim(),
-                                    "Pending",
-                                    DateFormat.yMd().format(DateTime.now()),
-                                    userPhone,
-                                    vendorPhone,
-                                    _moneyController.text.trim(),
-                                    "credit",
-                                  )) {
-                                    if (await updateUserCredit(
-                                        userPhone,
-                                        username,
-                                        totalDebit,
-                                        totalCredit,
-                                        creditScore,
-                                        userId,
-                                        pin,
-                                        email,
-                                        image,
-                                        _moneyController.text.trim())) {
-                                      if (await updateVendorDebit(
-                                        vendorPhone,
-                                        snapshot.data!.password,
-                                        snapshot.data!.vendorName,
-                                        snapshot.data!.totalDebit,
-                                        snapshot.data!.address,
-                                        snapshot.data!.totalLoanAmount,
-                                        snapshot.data!.vendorId,
-                                        snapshot.data!.shopName,
-                                        snapshot.data!.email,
-                                        snapshot.data!.image,
-                                        _moneyController.text.trim(),
-                                      )) {
-                                        AwesomeDialog(
-                                          context: context,
-                                          headerAnimationLoop: true,
-                                          animType: AnimType.scale,
-                                          btnCancelColor: mainColor,
-                                          dialogType: DialogType.success,
-                                          btnOkOnPress: () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const UserDashboard(),
-                                              ),
-                                            );
-                                          },
-                                          btnOkColor: mainColor,
-                                          title: 'Success',
-                                          desc: 'Transaction Successfully 😊',
-                                        ).show();
+                            ),
+                            const SizedBox(height: 10.0),
+                            const Divider(
+                              height: 2.0,
+                              color: Colors.black38,
+                            ),
+                            const SizedBox(height: 10.0),
+                            Consumer<VisibilityModel>(
+                              builder: (context, myModel, child) {
+                                return TextField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) => {
+                                    myModel.changeMoneyValidation(val),
+                                    if (myModel.isMoneyValid)
+                                      {
+                                        validMoney = true,
                                       }
+                                    else
+                                      {
+                                        validMoney = false,
+                                      }
+                                  },
+                                  controller: _moneyController,
+                                  decoration: InputDecoration(
+                                    counterText: "",
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 22.0,
+                                      vertical: 12.0,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: const BorderSide(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: myModel.isMoneyValid
+                                            ? mainColor
+                                            : Colors.red,
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    hintText: "Amount",
+                                    prefixIcon: Icon(
+                                      CupertinoIcons.money_dollar,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 10.0),
+                            TextField(
+                              controller: _dateController,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                counterText: "",
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 22.0,
+                                  vertical: 12.0,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    CupertinoIcons.calendar_today,
+                                  ),
+                                  onPressed: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2101));
+
+                                    if (pickedDate != null) {
+                                      String formattedDate =
+                                          DateFormat.yMd().format(pickedDate);
+
+                                      setState(() {
+                                        _dateController.text = formattedDate;
+                                        validDate = true;
+                                      });
+                                    } else {
+                                      AwesomeDialog(
+                                        context: context,
+                                        headerAnimationLoop: true,
+                                        animType: AnimType.scale,
+                                        btnCancelColor: mainColor,
+                                        dialogType: DialogType.warning,
+                                        btnCancelOnPress: () {},
+                                        title: 'Invalid Date',
+                                        desc: 'Please, select date',
+                                      ).show();
+                                    }
+                                  },
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: mainColor,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                hintText: "Select Payment Date",
+                                prefixIcon: Icon(
+                                  CupertinoIcons.calendar_badge_plus,
+                                  color: mainColor,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.065,
+                              child: ElevatedButton(
+                                style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                        Color.fromRGBO(63, 72, 204, 1))),
+                                child: const Text(
+                                  "TAKE BORROW",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (validDate && validMoney) {
+                                    if (await takeBorrow(
+                                      _dateController.text.trim(),
+                                      "Pending",
+                                      DateFormat.yMd().format(DateTime.now()),
+                                      userPhone,
+                                      vendorPhone,
+                                      _moneyController.text.trim(),
+                                      "credit",
+                                    )) {
+                                      if (await updateUserCredit(
+                                          userPhone,
+                                          username,
+                                          totalDebit,
+                                          totalCredit,
+                                          creditScore,
+                                          userId,
+                                          pin,
+                                          email,
+                                          image,
+                                          _moneyController.text.trim())) {
+                                        if (await updateVendorDebit(
+                                          vendorPhone,
+                                          snapshot.data!.password,
+                                          snapshot.data!.vendorName,
+                                          snapshot.data!.totalDebit,
+                                          snapshot.data!.address,
+                                          snapshot.data!.totalLoanAmount,
+                                          snapshot.data!.vendorId,
+                                          snapshot.data!.shopName,
+                                          snapshot.data!.email,
+                                          snapshot.data!.image,
+                                          _moneyController.text.trim(),
+                                        )) {
+                                          AwesomeDialog(
+                                            context: context,
+                                            headerAnimationLoop: true,
+                                            animType: AnimType.scale,
+                                            btnCancelColor: mainColor,
+                                            dialogType: DialogType.success,
+                                            btnOkOnPress: () {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const UserDashboard(),
+                                                ),
+                                              );
+                                            },
+                                            btnOkColor: mainColor,
+                                            title: 'Success',
+                                            desc: 'Transaction Successfully 😊',
+                                          ).show();
+                                        }
+                                      }
+                                    } else {
+                                      AwesomeDialog(
+                                        context: context,
+                                        headerAnimationLoop: true,
+                                        animType: AnimType.scale,
+                                        btnCancelColor: mainColor,
+                                        dialogType: DialogType.error,
+                                        btnCancelOnPress: () {},
+                                        title: 'Something went to wrong',
+                                        desc:
+                                            'Please, make one more transaction',
+                                      ).show();
                                     }
                                   } else {
                                     AwesomeDialog(
@@ -333,37 +354,41 @@ class _TakeMoneyState extends State<TakeMoney> {
                                       btnCancelColor: mainColor,
                                       dialogType: DialogType.error,
                                       btnCancelOnPress: () {},
-                                      title: 'Something went to wrong',
-                                      desc: 'Please, make one more transaction',
+                                      title: 'Invalid Details',
+                                      desc: 'Please, enter valid details',
                                     ).show();
                                   }
-                                } else {
-                                  AwesomeDialog(
-                                    context: context,
-                                    headerAnimationLoop: true,
-                                    animType: AnimType.scale,
-                                    btnCancelColor: mainColor,
-                                    dialogType: DialogType.error,
-                                    btnCancelOnPress: () {},
-                                    title: 'Invalid Details',
-                                    desc: 'Please, enter valid details',
-                                  ).show();
-                                }
-                              },
-                            ),
-                          )
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height / 2 - 100,
+                          ),
+                          CircularProgressIndicator(
+                            color: mainColor,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 2,
+                          ),
                         ],
                       ),
                     );
-                  } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
-
-                  return CircularProgressIndicator(
-                    color: mainColor,
-                  );
-                },
-              )),
+                  },
+                )),
+          ),
         ),
       ),
     );
@@ -387,6 +412,7 @@ class _TakeMoneyState extends State<TakeMoney> {
         "userId": userPhone,
         "vendorId": vendorPhone,
         "status": status,
+        "paymentStatus": "Pending",
         "dueDate": dueDate,
         "transactionDate": transactionDate,
         "amount": amount,

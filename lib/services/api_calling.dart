@@ -95,6 +95,35 @@ Future<List<VendorSpringBootModel>> fetchAllVendorsOnCredit(
   }
 }
 
+Future<List<UserSpringBootModel>> fetchAllUsersOnCredit(
+    String phoneNumber) async {
+  final response = await http.get(Uri.https(baseUrl,
+      "/vendor/getCustomerOnUserCredit", {"phoneNumber": phoneNumber}));
+  var responseData = json.decode(response.body);
+  List<UserSpringBootModel> users = [];
+  if (response.statusCode == 200) {
+    for (var user in responseData) {
+      UserSpringBootModel u1 = UserSpringBootModel(
+        totalDebit: user['totalDebit'],
+        phoneNumber: user['phoneNumber'],
+        password: user['password'],
+        email: user['email'],
+        userId: user['userId'],
+        creditScore: user['creditScore'],
+        securityPIN: user['securityPIN'],
+        userName: user['userName'],
+        totalCredit: user['totalCredit'],
+        image: user['image'],
+      );
+      users.add(u1);
+    }
+
+    return users;
+  } else {
+    throw Exception('Failed to load AllVendorsOnCredit data');
+  }
+}
+
 Future<List<BankSpringBootModel>> fetchAllBanks() async {
   String url = "https://$baseUrl/bank/getBank";
   final response = await http.get(Uri.parse(url));
@@ -131,6 +160,35 @@ Future<List<TransactionModel>> fetchAllTransaction(String phoneNumber) async {
         transactionDate: transaction['transactionDate'],
         dueDate: transaction['dueDate'],
         status: transaction['status'],
+        paymentStatus: transaction['paymentStatus'],
+        vendorId: transaction['vendorId'],
+        creditDebitStatus: transaction['creditDebitStatus'],
+        transactionId: transaction['transactionId'],
+        userId: transaction['userId'],
+      );
+      transactions.add(u1);
+    }
+
+    return transactions;
+  } else {
+    throw Exception('Failed to load AllTransaction data');
+  }
+}
+
+Future<List<TransactionModel>> fetchVendorAllTransaction(
+    String phoneNumber) async {
+  final response = await http.get(Uri.https(
+      baseUrl, "/vendor/getAllTransactions", {"phoneNumber": phoneNumber}));
+  var responseData = json.decode(response.body);
+  List<TransactionModel> transactions = [];
+  if (response.statusCode == 200) {
+    for (var transaction in responseData) {
+      TransactionModel u1 = TransactionModel(
+        amount: transaction['amount'],
+        transactionDate: transaction['transactionDate'],
+        dueDate: transaction['dueDate'],
+        status: transaction['status'],
+        paymentStatus: transaction['paymentStatus'],
         vendorId: transaction['vendorId'],
         creditDebitStatus: transaction['creditDebitStatus'],
         transactionId: transaction['transactionId'],
@@ -156,6 +214,7 @@ Future<TransactionModel> fetchOneTransaction(String id) async {
       transactionDate: transaction[0]['transactionDate'],
       dueDate: transaction[0]['dueDate'],
       status: transaction[0]['status'],
+      paymentStatus: transaction[0]['paymentStatus'],
       vendorId: transaction[0]['vendorId'],
       creditDebitStatus: transaction[0]['creditDebitStatus'],
       transactionId: transaction[0]['transactionId'],
@@ -183,6 +242,7 @@ Future<List<TransactionModel>> fetchParticularVendorTransaction(
         transactionDate: transaction['transactionDate'],
         dueDate: transaction['dueDate'],
         status: transaction['status'],
+        paymentStatus: transaction['paymentStatus'],
         vendorId: transaction['vendorId'],
         creditDebitStatus: transaction['creditDebitStatus'],
         transactionId: transaction['transactionId'],
@@ -410,6 +470,7 @@ Future<List<TimeRequestModel>> getTimeRequest(
       TimeRequestModel u1 = TimeRequestModel(
         message: transaction['message'],
         newDate: transaction['newDate'],
+        dueDate: transaction['dueDate'],
         status: transaction['status'],
         vendorId: transaction['vendorId'],
         timeRequestId: transaction['timeRequestId'],
@@ -420,6 +481,27 @@ Future<List<TimeRequestModel>> getTimeRequest(
     }
 
     return transactions;
+  } else {
+    throw Exception('Failed to load AllTransaction data');
+  }
+}
+
+Future<TimeRequestModel> getTimeRequestById(String timeRequestId) async {
+  final response = await http.get(Uri.https(baseUrl,
+      "/timeRequest/getTimeRequest", {"timeRequestId": timeRequestId}));
+  var responseData = json.decode(response.body);
+  if (response.statusCode == 200) {
+    TimeRequestModel u1 = TimeRequestModel(
+      message: responseData[0]['message'],
+      newDate: responseData[0]['newDate'],
+      dueDate: responseData[0]['dueDate'],
+      status: responseData[0]['status'],
+      vendorId: responseData[0]['vendorId'],
+      timeRequestId: responseData[0]['timeRequestId'],
+      transactionId: responseData[0]['transactionId'],
+      userId: responseData[0]['userId'],
+    );
+    return u1;
   } else {
     throw Exception('Failed to load AllTransaction data');
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:http/http.dart' as http;
@@ -12,12 +13,14 @@ import '../../../Models/message_model.dart';
 class SendMessageScreen extends StatefulWidget {
   final String vendorPhone;
   final String userPhone;
+  final String dueDate;
   final int transactionId;
   const SendMessageScreen(
       {Key? key,
       required this.vendorPhone,
       required this.userPhone,
-      required this.transactionId})
+      required this.transactionId,
+      required this.dueDate})
       : super(key: key);
 
   @override
@@ -52,11 +55,12 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: Icon(
-              Icons.arrow_back_ios_new,
+              CupertinoIcons.back,
               color: mainColor,
             ),
           ),
@@ -66,7 +70,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
             style: TextStyle(
               color: mainColor,
               fontWeight: FontWeight.bold,
-              fontSize: 25.5,
+              fontSize: 20.0,
             ),
           ),
           elevation: 0.0,
@@ -98,7 +102,9 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                       vertical: 12.0,
                     ),
                     suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
+                      icon: const Icon(
+                        CupertinoIcons.calendar_today,
+                      ),
                       onPressed: () async {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
@@ -143,7 +149,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                     ),
                     hintText: "Select New Date",
                     prefixIcon: Icon(
-                      Icons.date_range,
+                      CupertinoIcons.calendar_badge_plus,
                       color: mainColor,
                     ),
                   ),
@@ -171,7 +177,9 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                         List<String> vendorNumber = [vendorPhone.toString()];
                         await sendSMS(
                                 message: message, recipients: vendorNumber)
-                            .whenComplete(
+                            .catchError((onError) {
+                          print("akash");
+                        }).whenComplete(
                           () => sendMessage(
                             vendorPhone.toString(),
                             userPhone,
@@ -232,6 +240,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
         'status': status,
         'message': msg,
         'newDate': date,
+        'dueDate': widget.dueDate,
       }),
     );
 

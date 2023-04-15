@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ import '../../../Models/vendor_spring_boot_model.dart';
 import '../../../Modules/visibility_model.dart';
 import '../../../services/api_calling.dart';
 import '../../../utils/utils.dart';
-import 'vendor_dashboard.dart';
+import 'vendor_dashboard_user.dart';
 
 class UpdateVendorProfile extends StatefulWidget {
   final String phone;
@@ -69,23 +70,24 @@ class _UpdateVendorProfileState extends State<UpdateVendorProfile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
             icon: Icon(
-              Icons.arrow_back_ios_new,
+              CupertinoIcons.back,
               color: mainColor,
             ),
           ),
           centerTitle: true,
           title: Text(
-            "Change Profile",
+            "Update Profile",
             style: TextStyle(
               color: mainColor,
+              fontSize: 20.0,
               fontWeight: FontWeight.bold,
-              fontSize: 25.5,
             ),
           ),
           elevation: 0.0,
@@ -455,9 +457,21 @@ class _UpdateVendorProfileState extends State<UpdateVendorProfile> {
                       child: Text("${snapshot.error}"),
                     );
                   }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: mainColor,
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 2 - 100,
+                        ),
+                        CircularProgressIndicator(
+                          color: mainColor,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 2,
+                        ),
+                      ],
                     ),
                   );
                 },

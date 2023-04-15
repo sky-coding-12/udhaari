@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,7 @@ class _UserLoginState extends State<UserLogin> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => Navigator.pushReplacement(
@@ -53,7 +55,7 @@ class _UserLoginState extends State<UserLogin> {
               ),
             ),
             icon: Icon(
-              Icons.arrow_back_ios_new,
+              CupertinoIcons.back,
               color: mainColor,
             ),
           ),
@@ -63,7 +65,7 @@ class _UserLoginState extends State<UserLogin> {
             style: TextStyle(
               color: mainColor,
               fontWeight: FontWeight.bold,
-              fontSize: 25.5,
+              fontSize: 20.0,
             ),
           ),
           elevation: 0.0,
@@ -148,7 +150,7 @@ class _UserLoginState extends State<UserLogin> {
                             ),
                             hintText: "Phone Number",
                             prefixIcon: Icon(
-                              Icons.phone_android,
+                              CupertinoIcons.phone,
                               color: mainColor,
                             ),
                           ),
@@ -198,13 +200,17 @@ class _UserLoginState extends State<UserLogin> {
                             hintText: "Password",
                             suffixIcon: IconButton(
                               icon: myModel.isPassVisible
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
+                                  ? const Icon(
+                                      CupertinoIcons.eye,
+                                    )
+                                  : const Icon(
+                                      CupertinoIcons.eye_slash,
+                                    ),
                               onPressed: () => myModel.changePassVisibility(),
                               color: mainColor,
                             ),
                             prefixIcon: Icon(
-                              Icons.lock,
+                              CupertinoIcons.lock,
                               color: mainColor,
                             ),
                           ),

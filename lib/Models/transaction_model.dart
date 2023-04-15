@@ -3,6 +3,7 @@ class TransactionModel {
   int? userId;
   int? vendorId;
   String? status;
+  String? paymentStatus;
   String? creditDebitStatus;
   int? amount;
   String? dueDate;
@@ -13,6 +14,7 @@ class TransactionModel {
       this.userId,
       this.vendorId,
       this.status,
+      this.paymentStatus,
       this.creditDebitStatus,
       this.amount,
       this.dueDate,
@@ -23,6 +25,7 @@ class TransactionModel {
     userId = json['userId'];
     vendorId = json['vendorId'];
     status = json['status'];
+    paymentStatus = json['paymentStatus'];
     creditDebitStatus = json['creditDebitStatus'];
     amount = json['amount'];
     dueDate = json['dueDate'];
@@ -35,6 +38,7 @@ class TransactionModel {
     data['userId'] = this.userId;
     data['vendorId'] = this.vendorId;
     data['status'] = this.status;
+    data['paymentStatus'] = this.paymentStatus;
     data['creditDebitStatus'] = this.creditDebitStatus;
     data['amount'] = this.amount;
     data['dueDate'] = this.dueDate;

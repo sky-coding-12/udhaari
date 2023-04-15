@@ -1,6 +1,7 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 Color mainColor = const Color.fromRGBO(63, 72, 204, 1);
+Color backColor = Colors.grey.shade200;
 String title = "Take it";
 
 String baseUrl = "callous-canvas-production.up.railway.app";

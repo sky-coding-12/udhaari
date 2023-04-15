@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:take_it/Constant/const_variable.dart';
@@ -29,62 +30,65 @@ class _QR_Code_ScreenState extends State<QR_Code_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: mainColor,
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          "QR Code",
-          style: TextStyle(
-            color: mainColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 25.5,
-          ),
-        ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: Column(
-        children: [
-          const Spacer(),
-          FutureBuilder(
-            future: user,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.25,
-                  child: QrImage(
-                    foregroundColor: mainColor,
-                    data: "${snapshot.data!.phoneNumber}",
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator(
-                color: mainColor,
-              );
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backColor,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
             },
-          ),
-          const Spacer(),
-          const Center(
-            child: Text(
-              "©2023 take_it 🗿 | all rights reserved",
-              style: TextStyle(
-                fontSize: 15.0,
-                height: 3.0,
-              ),
+            icon: Icon(
+              CupertinoIcons.back,
+              color: mainColor,
             ),
           ),
-        ],
+          centerTitle: true,
+          title: Text(
+            "QR Code",
+            style: TextStyle(
+              color: mainColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
+          ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Column(
+          children: [
+            const Spacer(),
+            FutureBuilder(
+              future: user,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.25,
+                    child: QrImage(
+                      foregroundColor: mainColor,
+                      data: "${snapshot.data!.phoneNumber}",
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return CircularProgressIndicator(
+                  color: mainColor,
+                );
+              },
+            ),
+            const Spacer(),
+            const Center(
+              child: Text(
+                "©2023 take_it 🗿 | all rights reserved",
+                style: TextStyle(
+                  fontSize: 15.0,
+                  height: 3.0,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

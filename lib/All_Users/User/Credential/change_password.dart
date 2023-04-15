@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         body: ChangeNotifierProvider<VisibilityModel>(
           create: (context) => VisibilityModel(),
           child: SingleChildScrollView(
@@ -118,13 +120,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                             hintText: "New Password",
                             suffixIcon: IconButton(
                               icon: myModel.isPassVisible
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
+                                  ? const Icon(CupertinoIcons.eye)
+                                  : const Icon(CupertinoIcons.eye_slash),
                               onPressed: () => myModel.changePassVisibility(),
                               color: mainColor,
                             ),
                             prefixIcon: Icon(
-                              Icons.lock,
+                              CupertinoIcons.lock,
                               color: mainColor,
                             ),
                           ),
@@ -172,7 +174,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             ),
                             hintText: "Confirm Password",
                             prefixIcon: Icon(
-                              Icons.lock,
+                              CupertinoIcons.lock,
                               color: mainColor,
                             ),
                           ),

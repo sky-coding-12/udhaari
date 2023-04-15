@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Constant/const_variable.dart';
@@ -27,29 +28,30 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: mainColor,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backColor,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              CupertinoIcons.back,
+              color: mainColor,
+            ),
           ),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Vendor Profile",
-          style: TextStyle(
-            color: mainColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 25.5,
+          centerTitle: true,
+          title: Text(
+            "Vendor Profile",
+            style: TextStyle(
+              color: mainColor,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
         ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
@@ -99,7 +101,7 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           SizedBox(
                             height: 80.0,
                             width: MediaQuery.of(context).size.width,
@@ -131,7 +133,7 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           SizedBox(
                             height: 80.0,
                             width: MediaQuery.of(context).size.width,
@@ -163,7 +165,7 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           SizedBox(
                             height: 80.0,
                             width: MediaQuery.of(context).size.width,
@@ -195,7 +197,7 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           SizedBox(
                             height: 80.0,
                             width: MediaQuery.of(context).size.width,
@@ -227,7 +229,7 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           SizedBox(
                             height: 80.0,
                             width: MediaQuery.of(context).size.width,
@@ -259,7 +261,7 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           SizedBox(
                             height: 80.0,
                             width: MediaQuery.of(context).size.width,
@@ -297,8 +299,22 @@ class _ViewVendorProfileState extends State<ViewVendorProfile> {
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-                  return CircularProgressIndicator(
-                    color: mainColor,
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 2 - 100,
+                        ),
+                        CircularProgressIndicator(
+                          color: mainColor,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 2,
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

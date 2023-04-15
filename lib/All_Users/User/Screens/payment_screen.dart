@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../Constant/const_variable.dart';
+import '../../../Models/transaction_model.dart';
 import '../../../Models/user_spring_boot_model.dart';
 import '../../../Models/vendor_spring_boot_model.dart';
 import '../../../Modules/visibility_model.dart';
@@ -20,12 +22,14 @@ class PaymentScreen extends StatefulWidget {
   final String userPhone;
   final String dueDate;
   final int amount;
+  final int transactionId;
   const PaymentScreen({
     Key? key,
     required this.vendorPhone,
     required this.userPhone,
     required this.dueDate,
     required this.amount,
+    required this.transactionId,
   }) : super(key: key);
 
   @override
@@ -35,6 +39,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   late String vendorPhone;
   late String userPhone;
+  late int transactionId;
   late int remainingDays;
   late int upDays;
 
@@ -43,6 +48,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   late Future<VendorSpringBootModel> vendor;
   late Future<UserSpringBootModel> user;
+  late Future<TransactionModel> transaction;
   late Future<List<int>> amounts;
 
   final _razorpay = Razorpay();
@@ -60,6 +66,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String? securityPIN;
   late int amount;
 
+  late int vendorId;
+  late String status;
+  late String paymentStatus;
+  late String creditDebitStatus;
+  late String dueDate;
+  late String transactionDate;
+
   @override
   void initState() {
     super.initState();
@@ -69,6 +82,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     vendorPhone = widget.vendorPhone;
     userPhone = widget.userPhone;
     amount = widget.amount;
+    transactionId = widget.transactionId;
     final splitted = widget.dueDate.split('/');
     int day = int.parse(splitted[1]);
     int month = int.parse(splitted[0]);
@@ -79,7 +93,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
       user = fetchUser(userPhone);
       amounts =
           fetchParticularVendorCreditDebit(userPhone, vendorPhone.toString());
+      transaction = fetchOneTransaction(transactionId.toString());
     });
+    transaction.then((value) => {
+          status = value.status!,
+          vendorId = value.vendorId!,
+          paymentStatus = value.paymentStatus!,
+          dueDate = value.dueDate!,
+          transactionDate = value.transactionDate!,
+          creditDebitStatus = value.creditDebitStatus!,
+        });
     remainingDays = payDate.difference(currDate).inDays;
     upDays = currDate.difference(payDate).inDays;
     user.then((value) => {
@@ -108,24 +131,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
     )) {
       if (await updateUserCredit(userPhone, username, totalDebit, totalCredit,
           creditScore, userId, securityPIN!, email, image, amount.toString())) {
-        AwesomeDialog(
-          context: context,
-          headerAnimationLoop: true,
-          animType: AnimType.scale,
-          btnCancelColor: mainColor,
-          dialogType: DialogType.success,
-          btnOkOnPress: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const UserDashboard(),
-              ),
-            );
-          },
-          btnOkColor: mainColor,
-          title: 'Success',
-          desc: 'Transaction Successfully 😊',
-        ).show();
+        await updateUserTransaction(transactionId, userId, vendorId, status,
+                creditDebitStatus, amount, dueDate, transactionDate)
+            .whenComplete(() => AwesomeDialog(
+                  context: context,
+                  headerAnimationLoop: true,
+                  animType: AnimType.scale,
+                  btnCancelColor: mainColor,
+                  dialogType: DialogType.success,
+                  btnOkOnPress: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UserDashboard(),
+                      ),
+                    );
+                  },
+                  btnOkColor: mainColor,
+                  title: 'Success',
+                  desc: 'Transaction successfully 😁',
+                ).show());
       }
     } else {
       AwesomeDialog(
@@ -177,13 +202,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
             icon: Icon(
-              Icons.arrow_back_ios_new,
+              CupertinoIcons.back,
               color: mainColor,
             ),
           ),
@@ -192,7 +218,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             "Payment",
             style: TextStyle(
               color: mainColor,
-              fontSize: 24.0,
+              fontSize: 20.0,
             ),
           ),
           elevation: 0.0,
@@ -353,8 +379,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         return Text("${snapshot.error}");
                       }
 
-                      return CircularProgressIndicator(
-                        color: mainColor,
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height / 2 - 100,
+                            ),
+                            CircularProgressIndicator(
+                              color: mainColor,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 2,
+                            ),
+                          ],
+                        ),
                       );
                     }),
               ),
@@ -383,6 +424,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         "userId": userPhone,
         "vendorId": vendorPhone,
         "status": status,
+        "paymentStatus": "Complete",
         "dueDate": dueDate,
         "transactionDate": transactionDate,
         "amount": amount,
@@ -421,7 +463,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'password': password,
         'totalCredit': totalCredit,
         'totalDebit': totalDebit + money,
-        'creditScore': remainingDays >= 0
+        'creditScore': remainingDays > 0
             ? creditScore >= 95
                 ? creditScore == 100
                     ? creditScore
@@ -439,5 +481,34 @@ class _PaymentScreenState extends State<PaymentScreen> {
     } else {
       throw Exception('Failed to update user password.');
     }
+  }
+
+  Future<void> updateUserTransaction(
+    int transactionId,
+    int userId,
+    int vendorId,
+    String status,
+    String creditDebitStatus,
+    int amount,
+    String dueDate,
+    String transactionDate,
+  ) async {
+    final response = await http.put(
+      Uri.https(baseUrl, "/transaction/updateTransaction"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "userId": userPhone,
+        "transactionId": transactionId,
+        "vendorId": vendorPhone,
+        "status": status,
+        "paymentStatus": "Complete",
+        "dueDate": dueDate,
+        "transactionDate": transactionDate,
+        "amount": amount,
+        "creditDebitStatus": creditDebitStatus
+      }),
+    );
   }
 }

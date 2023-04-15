@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Constant/const_variable.dart';
@@ -36,11 +37,12 @@ class _ParticularVendorState extends State<ParticularVendor> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: Icon(
-              Icons.arrow_back_ios_new,
+              CupertinoIcons.back,
               color: mainColor,
             ),
           ),
@@ -50,31 +52,45 @@ class _ParticularVendorState extends State<ParticularVendor> {
             style: TextStyle(
               color: mainColor,
               fontWeight: FontWeight.bold,
-              fontSize: 25.5,
+              fontSize: 20.0,
             ),
           ),
           actions: [
-            IconButton(
-              tooltip: "All Messages",
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AllTimeRequestMessages(
-                              vendorPhone: vendorPhone,
-                              userPhone: userPhone,
-                            )));
+            FutureBuilder(
+              future: vendor,
+              builder: (builder, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text("${snapshot.error}"),
+                  );
+                } else if (snapshot.hasData) {
+                  return IconButton(
+                    tooltip: "All Messages",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllTimeRequestMessages(
+                                    vendorPhone: vendorPhone,
+                                    userPhone: userPhone,
+                                    shopName: snapshot.data!.shopName!,
+                                    vendorName: snapshot.data!.vendorName!,
+                                  )));
+                    },
+                    icon: Icon(
+                      CupertinoIcons.envelope,
+                      color: mainColor,
+                    ),
+                  );
+                }
+                return const SizedBox();
               },
-              icon: Icon(
-                Icons.message,
-                color: mainColor,
-              ),
             ),
             IconButton(
               tooltip: "Remainder",
               onPressed: () {},
               icon: Icon(
-                Icons.timer,
+                CupertinoIcons.clock,
                 color: mainColor,
               ),
             )
@@ -197,9 +213,22 @@ class _ParticularVendorState extends State<ParticularVendor> {
                           ],
                         );
                       }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: mainColor,
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height / 2 - 100,
+                            ),
+                            CircularProgressIndicator(
+                              color: mainColor,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 2,
+                            ),
+                          ],
                         ),
                       );
                     },
@@ -223,7 +252,10 @@ class _ParticularVendorState extends State<ParticularVendor> {
                                 return GestureDetector(
                                   onTap: () {
                                     snapshot.data[index].creditDebitStatus ==
-                                            "credit"
+                                                "credit" &&
+                                            snapshot.data[index]
+                                                    .paymentStatus ==
+                                                "Pending"
                                         ? Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -238,7 +270,7 @@ class _ParticularVendorState extends State<ParticularVendor> {
                                               ),
                                             ),
                                           )
-                                        : print("debit");
+                                        : print("");
                                   },
                                   child: Card(
                                     clipBehavior: Clip.hardEdge,
@@ -246,7 +278,7 @@ class _ParticularVendorState extends State<ParticularVendor> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: SizedBox(
-                                        height: 100.0,
+                                        height: 90.0,
                                         child: Row(
                                           children: [
                                             const SizedBox(width: 10.0),
@@ -256,26 +288,26 @@ class _ParticularVendorState extends State<ParticularVendor> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "Transaction ID : ",
-                                                      style: TextStyle(
-                                                        color: mainColor,
-                                                        fontSize: 16.0,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${snapshot.data[index].transactionId} ",
-                                                      style: const TextStyle(
-                                                        color: Colors.black54,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16.0,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                // Row(
+                                                //   children: [
+                                                //     Text(
+                                                //       "Transaction ID : ",
+                                                //       style: TextStyle(
+                                                //         color: mainColor,
+                                                //         fontSize: 16.0,
+                                                //       ),
+                                                //     ),
+                                                //     Text(
+                                                //       "${snapshot.data[index].transactionId} ",
+                                                //       style: const TextStyle(
+                                                //         color: Colors.black54,
+                                                //         fontWeight:
+                                                //             FontWeight.bold,
+                                                //         fontSize: 16.0,
+                                                //       ),
+                                                //     ),
+                                                //   ],
+                                                // ),
                                                 snapshot.data[index]
                                                             .creditDebitStatus ==
                                                         "credit"

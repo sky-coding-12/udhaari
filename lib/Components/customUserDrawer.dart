@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:take_it/All_Users/User/Screens/user_dashboard.dart';
@@ -81,7 +82,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         return Text("${snapshot.error}");
                       }
                       return SizedBox();
-                    })
+                    }),
               ],
             ),
             const SizedBox(height: 5.0),
@@ -96,7 +97,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.home_outlined,
+                        CupertinoIcons.home,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),
@@ -114,7 +115,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.account_box_outlined,
+                        CupertinoIcons.profile_circled,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),
@@ -132,7 +133,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.mode_edit_outline_outlined,
+                        CupertinoIcons.pen,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),
@@ -150,7 +151,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.history_edu,
+                        CupertinoIcons.rectangle_3_offgrid_fill,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),
@@ -168,7 +169,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.qr_code,
+                        CupertinoIcons.qrcode,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),
@@ -225,7 +226,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.call_outlined,
+                        CupertinoIcons.phone_circle,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),
@@ -246,7 +247,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Row(
                     children: const [
                       Icon(
-                        Icons.logout,
+                        CupertinoIcons.lock_slash,
                         size: 27.0,
                       ),
                       SizedBox(width: 12.0),

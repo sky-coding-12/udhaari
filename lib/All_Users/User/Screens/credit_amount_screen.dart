@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:take_it/All_Users/User/Screens/payment_screen.dart';
 
@@ -42,20 +43,18 @@ class _CreditAmountScreenState extends State<CreditAmountScreen> {
     setState(() {
       transaction = fetchOneTransaction(transactionId.toString());
     });
-    transaction.then(
-      (value) => value.dueDate,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          backgroundColor: backColor,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
               icon: Icon(
-                Icons.arrow_back_ios_new,
+                CupertinoIcons.back,
                 color: mainColor,
               ),
             ),
@@ -65,7 +64,7 @@ class _CreditAmountScreenState extends State<CreditAmountScreen> {
               style: TextStyle(
                 color: mainColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 25.5,
+                fontSize: 20.0,
               ),
             ),
             elevation: 0.0,
@@ -281,6 +280,8 @@ class _CreditAmountScreenState extends State<CreditAmountScreen> {
                                                       vendorPhone.toString(),
                                                   userPhone: userPhone,
                                                   transactionId: transactionId,
+                                                  dueDate:
+                                                      snapshot.data!.dueDate!,
                                                 )));
                                   },
                                   style: const ButtonStyle(
@@ -299,9 +300,22 @@ class _CreditAmountScreenState extends State<CreditAmountScreen> {
                             ],
                           );
                         }
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: mainColor,
+                        return Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 2 -
+                                    100,
+                              ),
+                              CircularProgressIndicator(
+                                color: mainColor,
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 2,
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -315,10 +329,13 @@ class _CreditAmountScreenState extends State<CreditAmountScreen> {
             future: transaction,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
+                return Center(
+                  child: Text("${snapshot.error}"),
+                );
               } else if (snapshot.hasData) {
                 return FloatingActionButton(
                   backgroundColor: mainColor,
-                  child: const Icon(Icons.payments),
+                  child: const Icon(CupertinoIcons.money_dollar_circle),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -328,6 +345,7 @@ class _CreditAmountScreenState extends State<CreditAmountScreen> {
                                   vendorPhone: vendorPhone.toString(),
                                   amount: amount,
                                   dueDate: snapshot.data!.dueDate!,
+                                  transactionId: snapshot.data!.transactionId!,
                                 )));
                   },
                 );

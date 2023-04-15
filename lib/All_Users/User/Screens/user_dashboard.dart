@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -58,6 +59,7 @@ class _UserDashboardState extends State<UserDashboard> {
       drawer: const CustomDrawer(),
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: backColor,
           key: scaffoldKey,
           body: Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
@@ -73,9 +75,17 @@ class _UserDashboardState extends State<UserDashboard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage("${snapshot.data!.image}"),
+                                child: Container(
+                                  height: 35.0,
+                                  width: 35.0,
+                                  padding: const EdgeInsets.all(15.0),
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/user.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                                 onTap: () {
                                   _advancedDrawerController.toggleDrawer();
@@ -83,6 +93,20 @@ class _UserDashboardState extends State<UserDashboard> {
                               ),
                               Row(
                                 children: [
+                                  IconButton(
+                                    tooltip: "Refresh",
+                                    onPressed: () => {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const UserDashboard())),
+                                    },
+                                    icon: Icon(
+                                      CupertinoIcons.refresh,
+                                      color: mainColor,
+                                    ),
+                                  ),
                                   IconButton(
                                     tooltip: "QR code",
                                     onPressed: () => {
@@ -96,7 +120,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                                   ))),
                                     },
                                     icon: Icon(
-                                      Icons.qr_code_2,
+                                      CupertinoIcons.qrcode,
                                       color: mainColor,
                                     ),
                                   ),
@@ -112,7 +136,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                               (route) => false)),
                                     },
                                     icon: Icon(
-                                      Icons.logout,
+                                      CupertinoIcons.lock_slash,
                                       color: mainColor,
                                     ),
                                   ),
@@ -266,13 +290,15 @@ class _UserDashboardState extends State<UserDashboard> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "${snapshot.data[index].vendorName}",
+                                                snapshot.data[index].shopName
+                                                    .toString()
+                                                    .toUpperCase(),
                                                 style: TextStyle(
                                                     fontSize: 18.0,
                                                     color: mainColor),
                                               ),
                                               Text(
-                                                  "${snapshot.data[index].shopName}"),
+                                                  "${snapshot.data[index].vendorName}"),
                                             ],
                                           ),
                                         ],
@@ -287,9 +313,22 @@ class _UserDashboardState extends State<UserDashboard> {
                           },
                         );
                       } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: mainColor,
+                        return Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 2 -
+                                    100,
+                              ),
+                              CircularProgressIndicator(
+                                color: mainColor,
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 2,
+                              ),
+                            ],
                           ),
                         );
                       }
@@ -310,7 +349,9 @@ class _UserDashboardState extends State<UserDashboard> {
             },
             backgroundColor: mainColor,
             tooltip: "Scan QR",
-            child: const Icon(Icons.qr_code_scanner),
+            child: const Icon(
+              CupertinoIcons.qrcode_viewfinder,
+            ),
           ),
         ),
       ),

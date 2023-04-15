@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +39,7 @@ class _UserForgotPasswordState extends State<UserForgotPassword> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: backColor,
         body: ChangeNotifierProvider<VisibilityModel>(
           create: (context) => VisibilityModel(),
           child: SingleChildScrollView(
@@ -117,7 +119,7 @@ class _UserForgotPasswordState extends State<UserForgotPassword> {
                             ),
                             hintText: "Phone Number",
                             prefixIcon: Icon(
-                              Icons.phone_android,
+                              CupertinoIcons.phone,
                               color: mainColor,
                             ),
                           ),

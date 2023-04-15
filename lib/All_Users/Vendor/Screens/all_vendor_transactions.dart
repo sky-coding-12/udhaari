@@ -5,15 +5,16 @@ import '../../../Constant/const_variable.dart';
 import '../../../Models/transaction_model.dart';
 import '../../../services/api_calling.dart';
 
-class TransactionHistory extends StatefulWidget {
+class AllVendorTransactions extends StatefulWidget {
   final String phone;
-  const TransactionHistory({Key? key, required this.phone}) : super(key: key);
+  const AllVendorTransactions({Key? key, required this.phone})
+      : super(key: key);
 
   @override
-  State<TransactionHistory> createState() => _TransactionHistoryState();
+  State<AllVendorTransactions> createState() => _AllVendorTransactionsState();
 }
 
-class _TransactionHistoryState extends State<TransactionHistory> {
+class _AllVendorTransactionsState extends State<AllVendorTransactions> {
   late String phone;
 
   late Future<TransactionModel> transaction;
@@ -42,8 +43,8 @@ class _TransactionHistoryState extends State<TransactionHistory> {
             "Transaction History",
             style: TextStyle(
               color: mainColor,
-              fontWeight: FontWeight.bold,
               fontSize: 20.0,
+              fontWeight: FontWeight.bold,
             ),
           ),
           elevation: 0.0,
@@ -53,7 +54,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: FutureBuilder(
-              future: fetchAllTransaction(phone),
+              future: fetchVendorAllTransaction(phone),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   return Text("${snapshot.error}");
@@ -184,13 +185,13 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                                       Row(
                                         children: [
                                           Text(
-                                            "Vendor Number : ",
+                                            "Customer Number : ",
                                             style: TextStyle(
                                                 fontSize: 16.0,
                                                 color: mainColor),
                                           ),
                                           Text(
-                                            "${snapshot.data[index].vendorId}",
+                                            "${snapshot.data[index].userId}",
                                             style: const TextStyle(
                                               color: Colors.black54,
                                               fontSize: 16.0,

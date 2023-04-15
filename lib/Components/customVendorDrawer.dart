@@ -4,12 +4,14 @@ import 'package:take_it/privacy_and_policy.dart';
 
 import '../All_Users/Vendor/Screens/qr_code_screen.dart';
 import '../All_Users/Vendor/Screens/update_vendor_profile.dart';
-import '../All_Users/Vendor/Screens/vendor_dashboard.dart';
+import '../All_Users/Vendor/Screens/vendor_dashboard_user.dart';
 import '../All_Users/Vendor/Screens/view_profile_screen.dart';
 import '../Constant/const_variable.dart';
 import '../FAQs_screen.dart';
+import '../Models/vendor_spring_boot_model.dart';
 import '../myApp.dart';
 import '../provider/vendor_auth_provider.dart';
+import '../services/api_calling.dart';
 import '../support_screen.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -20,6 +22,18 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  late Future<VendorSpringBootModel> vendor;
+
+  var ap;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      ap = Provider.of<VendorAuthProvider>(context, listen: false);
+      vendor = fetchParticularVendor(ap.vendorModel.phoneNumber.substring(3));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ap = Provider.of<VendorAuthProvider>(context, listen: false);
@@ -32,19 +46,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(ap.vendorModel.profilePic),
-                  radius: 60.0,
+                FutureBuilder(
+                  future: vendor,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CircleAvatar(
+                        backgroundImage:
+                            NetworkImage("${snapshot.data!.image}"),
+                        radius: 60.0,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return CircleAvatar(
+                      radius: 60.0,
+                      backgroundColor: mainColor,
+                    );
+                  },
                 ),
                 const SizedBox(height: 5.0),
-                Text(
-                  ap.vendorModel.shopName.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: mainColor,
-                  ),
-                )
+                FutureBuilder(
+                    future: vendor,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          snapshot.data!.vendorName!.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: mainColor,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return const SizedBox();
+                    }),
               ],
             ),
             const SizedBox(height: 5.0),

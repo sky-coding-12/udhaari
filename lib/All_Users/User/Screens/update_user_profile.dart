@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -69,23 +70,24 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          backgroundColor: backColor,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               icon: Icon(
-                Icons.arrow_back_ios_new,
+                CupertinoIcons.back,
                 color: mainColor,
               ),
             ),
             centerTitle: true,
             title: Text(
-              "Change Profile",
+              "Update Profile",
               style: TextStyle(
                 color: mainColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 25.5,
+                fontSize: 20.0,
               ),
             ),
             elevation: 0.0,
@@ -156,7 +158,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                     ),
                                     hintText: "Username",
                                     prefixIcon: Icon(
-                                      Icons.person,
+                                      CupertinoIcons.person,
                                       color: mainColor,
                                     ),
                                   ),
@@ -205,15 +207,19 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                     ),
                                     suffixIcon: IconButton(
                                       icon: myModel.isPinVisible
-                                          ? const Icon(Icons.visibility)
-                                          : const Icon(Icons.visibility_off),
+                                          ? const Icon(
+                                              CupertinoIcons.eye,
+                                            )
+                                          : const Icon(
+                                              CupertinoIcons.eye_slash,
+                                            ),
                                       onPressed: () =>
                                           myModel.changePinVisibility(),
                                       color: mainColor,
                                     ),
                                     hintText: "Security PIN (4 digit)",
                                     prefixIcon: Icon(
-                                      Icons.pin,
+                                      CupertinoIcons.number,
                                       color: mainColor,
                                     ),
                                   ),
@@ -259,7 +265,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                     ),
                                     hintText: "Email Address",
                                     prefixIcon: Icon(
-                                      Icons.alternate_email,
+                                      CupertinoIcons.mail,
                                       color: mainColor,
                                     ),
                                   ),
@@ -423,9 +429,22 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: mainColor,
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height / 2 - 100,
+                          ),
+                          CircularProgressIndicator(
+                            color: mainColor,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 2,
+                          ),
+                        ],
                       ),
                     );
                   },

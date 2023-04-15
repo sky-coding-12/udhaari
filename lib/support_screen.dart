@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'Constant/const_variable.dart';
@@ -13,7 +14,7 @@ class SupportScreen extends StatelessWidget {
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: Icon(
-              Icons.arrow_back_ios_new,
+              CupertinoIcons.back,
               color: mainColor,
             ),
           ),
@@ -22,8 +23,8 @@ class SupportScreen extends StatelessWidget {
             title,
             style: TextStyle(
               color: mainColor,
+              fontSize: 20.0,
               fontWeight: FontWeight.bold,
-              fontSize: 25.5,
             ),
           ),
           elevation: 0.0,

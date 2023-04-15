@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -53,85 +54,88 @@ class _QR_Scan_ScreenState extends State<QR_Scan_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: mainColor,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backColor,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              CupertinoIcons.back,
+              color: mainColor,
+            ),
           ),
-        ),
-        centerTitle: true,
-        title: Text(
-          title,
-          style: TextStyle(
-            color: mainColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 25.5,
+          centerTitle: true,
+          title: Text(
+            title,
+            style: TextStyle(
+              color: mainColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
         ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: Builder(
-        builder: (BuildContext context) {
-          return Container(
-            alignment: Alignment.center,
-            child: Flex(
-              direction: Axis.vertical,
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/qr_code.png"),
-                    ),
-                  ),
-                ),
-                const Text(
-                  "Scan QR Code",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 22.0,
-                  ),
-                ),
-                SizedBox(height: 15.0),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.065,
-                  child: ElevatedButton(
-                    onPressed: () => scanQR(),
-                    style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(
-                            Color.fromRGBO(63, 72, 204, 1))),
-                    child: const Text(
-                      "START QR SCAN",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w800,
+        body: Builder(
+          builder: (BuildContext context) {
+            return Container(
+              alignment: Alignment.center,
+              child: Flex(
+                direction: Axis.vertical,
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/qr_code.png"),
                       ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                const Center(
-                  child: Text(
-                    "©2023 take_it 🗿 | all rights reserved",
+                  const Text(
+                    "Scan QR Code",
                     style: TextStyle(
-                      fontSize: 15.0,
-                      height: 3.0,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 22.0,
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  SizedBox(height: 15.0),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.065,
+                    child: ElevatedButton(
+                      onPressed: () => scanQR(),
+                      style: const ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(
+                              Color.fromRGBO(63, 72, 204, 1))),
+                      child: const Text(
+                        "START QR SCAN",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  const Center(
+                    child: Text(
+                      "©2023 take_it 🗿 | all rights reserved",
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        height: 3.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

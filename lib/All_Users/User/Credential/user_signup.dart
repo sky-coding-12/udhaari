@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -70,472 +71,482 @@ class _UserSignUpState extends State<UserSignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          title,
-          style: TextStyle(
-            color: mainColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 25.5,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backColor,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            title,
+            style: TextStyle(
+              color: mainColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
         ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: SafeArea(
-        child: ChangeNotifierProvider<VisibilityModel>(
-          create: (context) => VisibilityModel(),
-          child: SingleChildScrollView(
-            child: Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  children: [
-                    // const Text(
-                    //   "SIGNUP",
-                    //   style: TextStyle(
-                    //     fontWeight: FontWeight.bold,
-                    //     letterSpacing: 1.0,
-                    //     fontSize: 22.0,
-                    //   ),
-                    // ),
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    InkWell(
-                      onTap: () => selectImage(),
-                      child: image == null
-                          ? CircleAvatar(
-                              backgroundColor: mainColor,
-                              radius: 50,
-                              child: const Icon(
-                                Icons.image,
-                                size: 50,
+        body: SafeArea(
+          child: ChangeNotifierProvider<VisibilityModel>(
+            create: (context) => VisibilityModel(),
+            child: SingleChildScrollView(
+              child: Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    children: [
+                      // const Text(
+                      //   "SIGNUP",
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.bold,
+                      //     letterSpacing: 1.0,
+                      //     fontSize: 22.0,
+                      //   ),
+                      // ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      InkWell(
+                        onTap: () => selectImage(),
+                        child: image == null
+                            ? CircleAvatar(
+                                backgroundColor: mainColor,
+                                radius: 50,
+                                child: const Icon(
+                                  CupertinoIcons.photo,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : CircleAvatar(
+                                backgroundImage: FileImage(image!),
+                                radius: 50,
+                              ),
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            onChanged: (val) => {
+                              myModel.changeUsernameValidation(val),
+                              if (myModel.isUsernameValid)
+                                {
+                                  validUsername = true,
+                                }
+                              else
+                                {
+                                  validUsername = false,
+                                }
+                            },
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isUsernameValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              hintText: "Username",
+                              prefixIcon: Icon(
+                                CupertinoIcons.person,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15.0),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            keyboardType: TextInputType.phone,
+                            maxLength: 10,
+                            onChanged: (val) => {
+                              myModel.changePhoneValidation(val),
+                              if (myModel.isPhoneValid)
+                                {
+                                  validPhone = true,
+                                }
+                              else
+                                {
+                                  validPhone = false,
+                                }
+                            },
+                            controller: _mobileController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isPhoneValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              hintText: "Mobile Number",
+                              prefixIcon: Icon(
+                                CupertinoIcons.phone,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15.0),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            onChanged: (val) => {
+                              myModel.changeEmailValidation(val),
+                              if (myModel.isEmailValid)
+                                {
+                                  validEmail = true,
+                                }
+                              else
+                                {
+                                  validEmail = false,
+                                }
+                            },
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isEmailValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              hintText: "Email Address",
+                              prefixIcon: Icon(
+                                CupertinoIcons.mail,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15.0),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            obscureText: !myModel.isPassVisible,
+                            onChanged: (val) => {
+                              myModel.changePassValidation(val),
+                              if (myModel.isPassValid)
+                                {
+                                  validPass = true,
+                                }
+                              else
+                                {
+                                  validPass = false,
+                                }
+                            },
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isPassValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              hintText: "Password",
+                              suffixIcon: IconButton(
+                                icon: myModel.isPassVisible
+                                    ? const Icon(CupertinoIcons.eye)
+                                    : const Icon(
+                                        CupertinoIcons.eye_slash,
+                                      ),
+                                onPressed: () => myModel.changePassVisibility(),
+                                color: mainColor,
+                              ),
+                              prefixIcon: Icon(
+                                CupertinoIcons.lock,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15.0),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            obscureText: true,
+                            onChanged: (val) => {
+                              myModel.changeConfirmPassValidation(
+                                  _passwordController.text, val),
+                              if (myModel.isConfirmValid)
+                                {
+                                  validConfirmPass = true,
+                                }
+                              else
+                                {
+                                  validConfirmPass = false,
+                                }
+                            },
+                            controller: _confirmPasswordController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isConfirmValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              hintText: "Confirm Password",
+                              prefixIcon: Icon(
+                                CupertinoIcons.lock,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 12.0),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            obscureText: !myModel.isPinVisible,
+                            maxLength: 4,
+                            keyboardType: TextInputType.number,
+                            onChanged: (val) => {
+                              myModel.changePINValidation(val),
+                              if (myModel.isPINValid)
+                                {
+                                  validPIN = true,
+                                }
+                              else
+                                {
+                                  validPIN = false,
+                                }
+                            },
+                            controller: _pinController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isPINValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: myModel.isPinVisible
+                                    ? const Icon(
+                                        CupertinoIcons.eye,
+                                      )
+                                    : const Icon(
+                                        CupertinoIcons.eye_slash,
+                                      ),
+                                onPressed: () => myModel.changePinVisibility(),
+                                color: mainColor,
+                              ),
+                              hintText: "Security PIN (4 digit)",
+                              prefixIcon: Icon(
+                                CupertinoIcons.number,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 12.0),
+                      Consumer<VisibilityModel>(
+                        builder: (context, myModel, child) {
+                          return TextField(
+                            obscureText: true,
+                            maxLength: 4,
+                            keyboardType: TextInputType.number,
+                            onChanged: (val) => {
+                              myModel.changeConfirmPINValidation(
+                                  _pinController.text, val),
+                              if (myModel.isConfirmPINValid)
+                                {
+                                  validConfirmPIN = true,
+                                }
+                              else
+                                {
+                                  validConfirmPIN = false,
+                                }
+                            },
+                            controller: _confirmPinController,
+                            decoration: InputDecoration(
+                              counterText: "",
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 22.0,
+                                vertical: 12.0,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: myModel.isConfirmPINValid
+                                      ? mainColor
+                                      : Colors.red,
+                                  width: 1.5,
+                                ),
+                              ),
+                              hintText: "Confirm Security PIN",
+                              prefixIcon: Icon(
+                                CupertinoIcons.number,
+                                color: mainColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15.0),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.065,
+                        child: ElevatedButton(
+                            style: const ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                    Color.fromRGBO(63, 72, 204, 1))),
+                            child: const Text(
+                              "SIGN UP",
+                              style: TextStyle(
                                 color: Colors.white,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w800,
                               ),
-                            )
-                          : CircleAvatar(
-                              backgroundImage: FileImage(image!),
-                              radius: 50,
                             ),
-                    ),
-                    const SizedBox(height: 10),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          onChanged: (val) => {
-                            myModel.changeUsernameValidation(val),
-                            if (myModel.isUsernameValid)
-                              {
-                                validUsername = true,
+                            onPressed: () {
+                              if (validConfirmPass &&
+                                  validPhone &&
+                                  validPass &&
+                                  validEmail &&
+                                  validPhone &&
+                                  validPIN &&
+                                  validConfirmPIN &&
+                                  validUsername) {
+                                storeData();
+                              } else {
+                                AwesomeDialog(
+                                  context: context,
+                                  headerAnimationLoop: true,
+                                  animType: AnimType.scale,
+                                  btnCancelColor: mainColor,
+                                  dialogType: DialogType.error,
+                                  btnCancelOnPress: () {},
+                                  title: 'Invalid Details',
+                                  desc: 'Please, enter valid details',
+                                ).show();
                               }
-                            else
-                              {
-                                validUsername = false,
-                              }
-                          },
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
+                            }),
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Already have an Account?"),
+                          const SizedBox(width: 2.0),
+                          InkWell(
+                            onTap: () => {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UserLogin(),
+                                ),
                               ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: myModel.isUsernameValid
-                                    ? mainColor
-                                    : Colors.red,
-                                width: 1.5,
+                            },
+                            child: const Text(
+                              "Sign in",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.blue,
                               ),
-                            ),
-                            hintText: "Username",
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: mainColor,
                             ),
                           ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 15.0),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          keyboardType: TextInputType.phone,
-                          maxLength: 10,
-                          onChanged: (val) => {
-                            myModel.changePhoneValidation(val),
-                            if (myModel.isPhoneValid)
-                              {
-                                validPhone = true,
-                              }
-                            else
-                              {
-                                validPhone = false,
-                              }
-                          },
-                          controller: _mobileController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: myModel.isPhoneValid
-                                    ? mainColor
-                                    : Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            hintText: "Mobile Number",
-                            prefixIcon: Icon(
-                              Icons.phone_android,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 15.0),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          onChanged: (val) => {
-                            myModel.changeEmailValidation(val),
-                            if (myModel.isEmailValid)
-                              {
-                                validEmail = true,
-                              }
-                            else
-                              {
-                                validEmail = false,
-                              }
-                          },
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: myModel.isEmailValid
-                                    ? mainColor
-                                    : Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            hintText: "Email Address",
-                            prefixIcon: Icon(
-                              Icons.alternate_email,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 15.0),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          obscureText: !myModel.isPassVisible,
-                          onChanged: (val) => {
-                            myModel.changePassValidation(val),
-                            if (myModel.isPassValid)
-                              {
-                                validPass = true,
-                              }
-                            else
-                              {
-                                validPass = false,
-                              }
-                          },
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: myModel.isPassValid
-                                    ? mainColor
-                                    : Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            hintText: "Password",
-                            suffixIcon: IconButton(
-                              icon: myModel.isPassVisible
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
-                              onPressed: () => myModel.changePassVisibility(),
-                              color: mainColor,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 15.0),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          obscureText: true,
-                          onChanged: (val) => {
-                            myModel.changeConfirmPassValidation(
-                                _passwordController.text, val),
-                            if (myModel.isConfirmValid)
-                              {
-                                validConfirmPass = true,
-                              }
-                            else
-                              {
-                                validConfirmPass = false,
-                              }
-                          },
-                          controller: _confirmPasswordController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: myModel.isConfirmValid
-                                    ? mainColor
-                                    : Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            hintText: "Confirm Password",
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 12.0),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          obscureText: !myModel.isPinVisible,
-                          maxLength: 4,
-                          keyboardType: TextInputType.number,
-                          onChanged: (val) => {
-                            myModel.changePINValidation(val),
-                            if (myModel.isPINValid)
-                              {
-                                validPIN = true,
-                              }
-                            else
-                              {
-                                validPIN = false,
-                              }
-                          },
-                          controller: _pinController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color:
-                                    myModel.isPINValid ? mainColor : Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: myModel.isPinVisible
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
-                              onPressed: () => myModel.changePinVisibility(),
-                              color: mainColor,
-                            ),
-                            hintText: "Security PIN (4 digit)",
-                            prefixIcon: Icon(
-                              Icons.pin,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 12.0),
-                    Consumer<VisibilityModel>(
-                      builder: (context, myModel, child) {
-                        return TextField(
-                          obscureText: true,
-                          maxLength: 4,
-                          keyboardType: TextInputType.number,
-                          onChanged: (val) => {
-                            myModel.changeConfirmPINValidation(
-                                _pinController.text, val),
-                            if (myModel.isConfirmPINValid)
-                              {
-                                validConfirmPIN = true,
-                              }
-                            else
-                              {
-                                validConfirmPIN = false,
-                              }
-                          },
-                          controller: _confirmPinController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 22.0,
-                              vertical: 12.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: myModel.isConfirmPINValid
-                                    ? mainColor
-                                    : Colors.red,
-                                width: 1.5,
-                              ),
-                            ),
-                            hintText: "Confirm Security PIN",
-                            prefixIcon: Icon(
-                              Icons.pin,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 15.0),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.065,
-                      child: ElevatedButton(
-                          style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  Color.fromRGBO(63, 72, 204, 1))),
-                          child: const Text(
-                            "SIGN UP",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (validConfirmPass &&
-                                validPhone &&
-                                validPass &&
-                                validEmail &&
-                                validPhone &&
-                                validPIN &&
-                                validConfirmPIN &&
-                                validUsername) {
-                              storeData();
-                            } else {
-                              AwesomeDialog(
-                                context: context,
-                                headerAnimationLoop: true,
-                                animType: AnimType.scale,
-                                btnCancelColor: mainColor,
-                                dialogType: DialogType.error,
-                                btnCancelOnPress: () {},
-                                title: 'Invalid Details',
-                                desc: 'Please, enter valid details',
-                              ).show();
-                            }
-                          }),
-                    ),
-                    const SizedBox(height: 15.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Already have an Account?"),
-                        const SizedBox(width: 2.0),
-                        InkWell(
-                          onTap: () => {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const UserLogin(),
-                              ),
-                            ),
-                          },
-                          child: const Text(
-                            "Sign in",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15.0),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                    ],
+                  ),
                 ),
               ),
             ),
